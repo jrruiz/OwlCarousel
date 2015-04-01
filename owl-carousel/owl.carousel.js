@@ -1149,26 +1149,28 @@ if (typeof Object.create !== "function") {
                 }
 
                 itemNumber = $item.data("owl-item");
-                $lazyImg = $item.find(".lazyOwl");
+                $lazyOwls = $item.find(".lazyOwl");
 
-                if (typeof $lazyImg.data("src") !== "string") {
-                    $item.data("owl-loaded", "loaded");
-                    continue;
-                }
-                if ($item.data("owl-loaded") === undefined) {
-                    $lazyImg.hide();
-                    $item.addClass("loading").data("owl-loaded", "checked");
-                }
-                if (base.options.lazyFollow === true) {
-                    follow = itemNumber >= base.currentItem;
-                } else {
-                    follow = true;
-                }
-                if (follow && itemNumber < base.currentItem + base.options.items && $lazyImg.length) {
-                    $lazyImg.each(function() {
-                        base.lazyPreload($item, $(this));
-                    });
-                }
+                $lazyOwls.each(function(index, element) {
+                    var $lazyImg = $(element);
+
+                    if (typeof $lazyImg.data("src") !== "string") {
+                        $item.data("owl-loaded", "loaded");
+                        return;
+                    }
+                    if ($item.data("owl-loaded") === undefined) {
+                        $lazyImg.hide();
+                        $item.addClass("loading").data("owl-loaded", "checked");
+                    }
+                    if (base.options.lazyFollow === true) {
+                        follow = itemNumber >= base.currentItem;
+                    } else {
+                        follow = true;
+                    }
+                    if (follow && itemNumber < base.currentItem + base.options.items && $lazyImg.length) {
+                        base.lazyPreload($item, $lazyImg);
+                    }
+                });
             }
         },
 
